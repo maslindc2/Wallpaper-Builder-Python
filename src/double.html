@@ -23,7 +23,7 @@
             });
         });
         
-        function ResizeImage() {
+        function resizeImage() {
             if (window.File && window.FileReader && window.FileList && window.Blob) {
                 var filesToUploads = document.getElementById('imageFile').files;
                 var file = filesToUploads[0];
@@ -40,43 +40,42 @@
                         var ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0);
 
-                        var MAX_WIDTH = 400;
-                        var MAX_HEIGHT = 400;
-                        var width = img.width;
-                        var height = img.height;
+                        
+                        const inputWidth = img.width;
+                        const inputHeight = img.height;
+                        //Get the input image aspect ratio
+                        const inputAspectRatio = inputWidth/inputHeight;
+                        
+                        //Destination ratio since we are using 1920x1080
+                        const aspectRatio = 16/9;
 
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
+                        let outputWidth = inputWidth;
+                        let outputHeight = inputHeight;
+
+                        if(inputAspectRatio > aspectRatio){
+                            outputWidth = inputHeight * aspectRatio;
+                        } else if (inputAspectRatio < aspectRatio){
+                            outputHeight = width / aspectRatio;
                         }
-                        canvas.width = width;
-                        canvas.height = height;
-                        var ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, width, height);
+                        const outputX = (outputWidth - inputWidth) * .5;
+                        const outputY = (outputHeight - inputHeight) * .5;
+                        
+                        canvas.width = outputWidth;
+                        canvas.height = outputHeight;
 
-                        dataurl = canvas.toDataURL(file.type);
-                        document.getElementById('output').src = dataurl;
+                        var ctx = outputImage.getContext('2d');
+                        ctx.drawImage(img, outputX, outputY);
+                        resolve(outputImage);
                     }
                     reader.readAsDataURL(file);
 
                 }
-
-            } else {
-                alert('The File APIs are not fully supported in this browser.');
             }
+        }
     </script>
 </head>
 <body>
     <input id="imageFile" name="imageFile" type="file" class="imageFile"  accept="image/*"   /> 
     <input type="button" value="Resize Image"  onclick="resizeImage()"/> 
-    
-    
 </body>
 </html>
