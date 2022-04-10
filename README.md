@@ -1,5 +1,5 @@
 
-# Wallpaper Creator
+# Wallpaper Builder Script Edition
 Wallpaper creator is a simple python program that stitches images together to create one multi-monitor wallpaper.  The program will automatically resize the provided images to 1920x1080 before stitching.   Wallpaper creator supports the following configurations: dual, triple and stacked. 
 ## Getting Started
 ### Requirements
