@@ -17,10 +17,10 @@ def resize():
     # Set the output vars to global and then use ImageOps to crop the images to 
     # 1920x1080
     global resizedImage1
-    resizedImage1 = ImageOps.fit(image1, (1920,1080), Image.ANTIALIAS)
+    resizedImage1 = ImageOps.fit(image1, (1920,1080))
 
     global resizedImage2
-    resizedImage2 = ImageOps.fit(image2, (1920,1080), Image.ANTIALIAS)
+    resizedImage2 = ImageOps.fit(image2, (1920,1080))
 
 def dual():
     # Call resize and then place the images in the order left, right and output the
@@ -77,7 +77,7 @@ def triple():
     #For triple we need three images so get the path for another image and resize it    
     image3FilePath = filedialog.askopenfilename(filetypes=(("All files", "*.*"),))
     image3 = Image.open(image3FilePath)
-    resizedImage3 = ImageOps.fit(image3, (1920,1080), Image.ANTIALIAS)
+    resizedImage3 = ImageOps.fit(image3, (1920,1080))
     combined = Image.new("RGB", (5760, 1080))
 
     #Pasting images in the order left middle right
@@ -88,18 +88,18 @@ def triple():
     wallpaperName = input('What would you like to name your newly created wallpaper?\n' )
     
     #Check to make sure the user gave a wallpaper name
-    if not wallpaperName.isalpha():
-        print(wallpaperName + " is not valid or you did not provide a name, close and re-run the program")
-    
-    #Ask for file type
-    print("What file type do you want to save as?")
-    fileType = input(".jpg (1), or .png (2), (default is png)")
-    if fileType == "1" or fileType == "2" or fileType == ".jpg" or fileType == ".png":
-        combined.save(wallpaperName + fileType)
-        print("Wallpaper has been created " + wallpaperName + fileType)
+    if wallpaperName.isalpha():
+        #Ask for file type
+        print("What file type do you want to save as? ")
+        fileType = input(".jpg (1), or .png (2), (default is png): ")
+        if fileType == "1" or fileType == ".jpg":         
+            combined.save(wallpaperName + ".jpg")
+            print("Wallpaper has been created: " + wallpaperName + ".jpg")
+        else:
+            combined.save(wallpaperName + ".png")
+            print("Wallpaper has been created: " + wallpaperName + ".png")
     else:
-        combined.save(wallpaperName + ".png")
-        print("Wallpaper has been created " + wallpaperName + ".png")
+        print("Wallpaper was not named...quitting now")
 
 if __name__ == "__main__":
     print("How would you like to arrange your wallpaper?")
